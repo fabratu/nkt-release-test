@@ -1,16 +1,25 @@
-# appveyor.yml
----
+image: Ubuntu2004
+version: 0.1.{build}
+pull_requests:
+  do_not_increment_build_number: true
 environment:
   matrix:
-  - TOXENV: py35
-  - TOXENV: py36
-  - TOXENV: py37
-  - TOXENV: py38
-
-build: off
-
-install:
-- pip3 install tox
-
+    - PYTHON_VER: $HOME/venv3.5 
+    - PYTHON_VER: $HOME/venv3.6
+    - PYTHON_VER: $HOME/venv3.7
+    - PYTHON_VER: $HOME/venv3.8
+    - PYTHON_VER: $HOME/venv3.9
+before_build:
+- sh: >-
+    echo "Activate %PYTHON_VER%"
+    source %PYTHON_VER%/bin/activate
+    echo "Prepare pip3, cython"
+    pip3 install --upgrade pip
+    pip3 install networkit
+build:
+  parallel: true
+  verbosity: minimal
 test_script:
-- tox
+- sh: >-
+    cd $HOME
+    python3 -c "import networkit; g=networkit.graph.Graph(7); print(g)"
