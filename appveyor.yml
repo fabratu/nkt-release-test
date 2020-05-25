@@ -12,7 +12,7 @@ environment:
     - PYTHON_VER: $HOME/venv3.9
 before_build:
 - cmd: >-
-    echo "Activate %PYTHON_VER%
+    echo "Activate %PYTHON_VER%"
     source %PYTHON_VER%/bin/activate
     echo "Prepare pip3, cython"
     pip3 install --upgrade pip
